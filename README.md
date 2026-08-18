@@ -25,8 +25,7 @@ Then switch straight into math:
 yo what's 45 + 55?
 bro what's √144?
 wait calculate 2sin(30)
-okay what's sin 45 plus cos 45?
-nah what's 999 / 3?
+ok what's sin 45 plus cos 45?
 ```
 
 No need to change the way you talk just because you're doing math.
