@@ -176,9 +176,7 @@ Future improvements can include:
 * Voice input
 * More ways to interact with Jack
 
-## CLOCK IT
-
-A Mathematics AI that doesn't make you learn how to talk to it.
+## A Mathematics AI that doesn't make you learn how to talk to it.
 
 **You already know how to talk.**
 
