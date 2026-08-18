@@ -1,0 +1,341 @@
+/* ============================================================
+   MathBot — "Room 204's Chalkboard"
+   A math chatbot styled like a well-used classroom chalkboard:
+   wooden frame, chalk-dust texture, hand-scrawled bot replies,
+   and user questions dropped in like torn notebook paper.
+   ============================================================ */
+
+:root {
+    --board-dark: #1c3a2b;
+    --board-mid: #234832;
+    --board-light: #2c5940;
+    --wood-dark: #4a2c1a;
+    --wood-mid: #6b4226;
+    --wood-light: #8b5a2b;
+    --chalk-white: #f5f3e7;
+    --chalk-yellow: #f2c94c;
+    --chalk-pink: #e8998d;
+    --note-cream: #f4ecd8;
+    --note-ink: #2c2418;
+    --ring: rgba(242, 201, 76, 0.65);
+
+    --font-hand: 'Kalam', cursive;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(ellipse at top, #3b2a1f 0%, #1a120c 70%);
+    font-family: var(--font-hand);
+}
+
+/* ---------- Wooden frame ---------- */
+
+.frame {
+    width: 100%;
+    max-width: 480px;
+    padding: 14px;
+    border-radius: 18px;
+    background:
+        repeating-linear-gradient(
+            100deg,
+            var(--wood-mid) 0px,
+            var(--wood-light) 3px,
+            var(--wood-mid) 7px,
+            var(--wood-dark) 11px
+        );
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.55),
+        inset 0 0 0 2px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- The board itself ---------- */
+
+.board {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: min(78vh, 700px);
+    border-radius: 8px;
+    padding: 18px 18px 0;
+    background-color: var(--board-dark);
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(160deg, var(--board-light) 0%, var(--board-mid) 45%, var(--board-dark) 100%);
+    background-size: 6px 6px, cover;
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.55), inset 0 0 3px rgba(0,0,0,0.6);
+    overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+
+.board-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--chalk-white);
+}
+
+.board-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-shadow: 0 0 6px rgba(245, 243, 231, 0.25);
+}
+
+.tagline {
+    margin: 4px 0 0;
+    font-size: 15px;
+    opacity: 0.8;
+}
+
+.eraser-btn {
+    flex-shrink: 0;
+    margin-top: 6px;
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.eraser-btn:hover {
+    transform: rotate(-6deg) scale(1.08);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.eraser-btn:focus-visible,
+.icon-btn:focus-visible,
+#userInput:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
+/* Hand-drawn dashed chalk divider */
+.chalk-divider {
+    height: 2px;
+    margin: 12px 0 6px;
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(245, 243, 231, 0.55) 0,
+        rgba(245, 243, 231, 0.55) 10px,
+        transparent 10px,
+        transparent 18px
+    );
+    opacity: 0.6;
+}
+
+/* ---------- Chat area ---------- */
+
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 2px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(245, 243, 231, 0.3) transparent;
+}
+
+.chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+.chat-box::-webkit-scrollbar-thumb {
+    background: rgba(245, 243, 231, 0.25);
+    border-radius: 4px;
+}
+
+.message {
+    max-width: 82%;
+    font-size: 16px;
+    line-height: 1.4;
+    animation: appear 0.25s ease-out;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bot replies: chalk handwriting straight on the board */
+.bot-msg {
+    align-self: flex-start;
+    color: var(--chalk-white);
+    padding: 6px 4px;
+    text-shadow:
+        0 0 1px rgba(245, 243, 231, 0.8),
+        0 0 8px rgba(245, 243, 231, 0.25);
+    transform: rotate(-0.6deg);
+}
+
+.bot-msg .answer {
+    display: inline-block;
+    margin-top: 4px;
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--chalk-yellow);
+    text-shadow: 0 0 10px rgba(242, 201, 76, 0.45);
+}
+
+/* User messages: a note tossed onto the board */
+.user-msg {
+    align-self: flex-end;
+    background: var(--note-cream);
+    color: var(--note-ink);
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    padding: 9px 13px;
+    border-radius: 3px 12px 12px 12px;
+    box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.35);
+    transform: rotate(0.8deg);
+}
+
+/* Typing indicator */
+.typing-indicator {
+    display: flex;
+    gap: 5px;
+    padding: 0 4px 8px;
+}
+.typing-indicator span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--chalk-white);
+    opacity: 0.5;
+    animation: blink 1.1s infinite ease-in-out;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.15s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes blink {
+    0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+    40% { opacity: 0.9; transform: translateY(-3px); }
+}
+
+/* ---------- Input area ---------- */
+
+.input-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 4px;
+    border-top: 1px dashed rgba(245, 243, 231, 0.25);
+}
+
+#userInput {
+    flex: 1;
+    min-width: 0;
+    background: rgba(245, 243, 231, 0.08);
+    border: 1px solid rgba(245, 243, 231, 0.25);
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--chalk-white);
+}
+
+#userInput::placeholder {
+    color: rgba(245, 243, 231, 0.45);
+}
+
+.icon-btn {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(245, 243, 231, 0.25);
+    background: rgba(245, 243, 231, 0.08);
+    color: var(--chalk-white);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(245, 243, 231, 0.18);
+}
+
+.send-btn {
+    background: var(--chalk-pink);
+    color: var(--board-dark);
+    border-color: transparent;
+}
+
+.send-btn:hover {
+    background: #f0ada3;
+}
+
+#voiceBtn.listening {
+    background: var(--chalk-pink);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232, 153, 141, 0.55); }
+    50% { box-shadow: 0 0 0 8px rgba(232, 153, 141, 0); }
+}
+
+/* ---------- Chalk tray ---------- */
+
+.chalk-tray {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 20px;
+    padding: 4px 10px 8px;
+    background: linear-gradient(180deg, var(--wood-light), var(--wood-mid));
+    border-top: 2px solid rgba(0, 0, 0, 0.25);
+}
+
+.chalk {
+    width: 26px;
+    height: 8px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease;
+}
+
+.chalk-white { background: var(--chalk-white); }
+.chalk-yellow { background: var(--chalk-yellow); }
+.chalk-pink { background: var(--chalk-pink); }
+
+.chalk-tray:hover .chalk {
+    transform: translateY(-2px);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 420px) {
+    body { padding: 12px; }
+    .board { height: 88vh; padding: 14px 14px 0; }
+    .board-header h1 { font-size: 23px; }
+}
+
+/* ---------- Motion preference ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .message, .eraser-btn, .chalk, .icon-btn, #voiceBtn.listening {
+        animation: none !important;
+        transition: none !important;
+    }
+    .bot-msg, .user-msg { transform: none; }
+}
