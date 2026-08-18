@@ -1,10 +1,3 @@
-/* ============================================================
-   MathBot — "Room 204's Chalkboard"
-   A math chatbot styled like a well-used classroom chalkboard:
-   wooden frame, chalk-dust texture, hand-scrawled bot replies,
-   and user questions dropped in like torn notebook paper.
-   ============================================================ */
-
 :root {
     --board-dark: #1c3a2b;
     --board-mid: #234832;
@@ -42,7 +35,6 @@ body {
     font-family: var(--font-hand);
 }
 
-/* ---------- Wooden frame ---------- */
 
 .frame {
     width: 100%;
@@ -62,7 +54,6 @@ body {
         inset 0 0 0 2px rgba(0, 0, 0, 0.25);
 }
 
-/* ---------- The board itself ---------- */
 
 .board {
     position: relative;
@@ -79,8 +70,6 @@ body {
     box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.55), inset 0 0 3px rgba(0,0,0,0.6);
     overflow: hidden;
 }
-
-/* ---------- Header ---------- */
 
 .board-header {
     display: flex;
@@ -141,7 +130,6 @@ body {
     opacity: 0.6;
 }
 
-/* ---------- Chat area ---------- */
 
 .chat-box {
     flex: 1;
