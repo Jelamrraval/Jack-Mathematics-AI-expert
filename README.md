@@ -1,5 +1,9 @@
 # Jack — Mathematics AI Expert
 
+
+> **YO, GEN Z — GO TRY JACK. IT ACTUALLY GETS YOU.**
+
+
 Jack is an advanced Mathematics AI built for people who don't want to talk to math like a calculator.
 
 You can type math normally, ask questions casually, use symbols, mix words with expressions, or throw in some Gen-Z energy.
