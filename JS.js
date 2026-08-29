@@ -36,7 +36,8 @@ const HYPE_PHRASES = [
     "Sounds good.",
     "Cool.",
     "Alright, bet.",
-    "Fair enough."
+    "Fair enough.",
+    "Clock itt."
 ];
 
 function randomHype() {
